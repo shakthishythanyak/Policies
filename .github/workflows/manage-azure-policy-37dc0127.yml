@@ -1,0 +1,32 @@
+name: manage-azure-policy-37dc0127
+on:
+  workflow_dispatch:
+    inputs:
+      remarks:
+        description: 'Reason for triggering the workflow run'
+        required: false
+        default: 'Updating Azure Policies'
+
+
+## Uncomment the following if you wish to automatically trigger workflow run with every commit
+#
+#  push:
+#    paths:
+#      - 'policies/Audit_VMs_that_do_not_use_managed_disks_06a78e20-9358-41c9-923c-fb736d382a4d/**'
+#      - .github/workflows/manage-azure-policy-37dc0127.yml
+jobs:
+  apply-azure-policy:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: Login to Azure
+      uses: azure/login@v1
+      with:
+        creds: ${{secrets.AZURE_CREDENTIALS_37dc0127}}
+        allow-no-subscriptions: true
+    - name: Create or Update Azure Policies
+      uses: azure/manage-azure-policy@v0
+      with:
+        paths: |
+          policies/Audit_VMs_that_do_not_use_managed_disks_06a78e20-9358-41c9-923c-fb736d382a4d/**
