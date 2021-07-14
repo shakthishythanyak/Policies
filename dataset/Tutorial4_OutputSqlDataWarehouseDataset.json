@@ -1,0 +1,23 @@
+{
+	"name": "Tutorial4_OutputSqlDataWarehouseDataset",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Tutorial4_AzureSqlDataWarehouseLinkedService",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"DWTableName": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "AzureSqlDWTable",
+		"typeProperties": {
+			"tableName": {
+				"value": "@{dataset().DWTableName}",
+				"type": "Expression"
+			}
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

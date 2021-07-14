@@ -1,0 +1,15 @@
+{
+	"name": "Tutorial4_InputSqlDataset",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Tutorial4_AzureSqlDatabaseLinkedService",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"typeProperties": {
+			"tableName": "'dummy'"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

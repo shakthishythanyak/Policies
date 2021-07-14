@@ -1,0 +1,57 @@
+{
+	"name": "Tutorial2-TriggerCopyPipeline",
+	"properties": {
+		"activities": [
+			{
+				"name": "LookupTableList",
+				"description": " Retrieve the table list from Azure SQL database",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"retryIntervalInSeconds": 30
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "SqlSource",
+						"sqlReaderQuery": "SELECT TABLE_SCHEMA, TABLE_NAME FROM information_schema.TABLES WHERE TABLE_TYPE = 'BASE TABLE' and TABLE_SCHEMA = 'SalesLT' and TABLE_NAME <> 'ProductModel'",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "Tutorial4_InputSqlDataset",
+						"type": "DatasetReference"
+					},
+					"firstRowOnly": false
+				}
+			},
+			{
+				"name": "TriggerCopy",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "LookupTableList",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "Tutorial2-CopyFromSqlToSqlDwPipeline",
+						"type": "PipelineReference"
+					},
+					"parameters": {
+						"tableList": {
+							"value": "@activity('LookupTableList').output.value",
+							"type": "Expression"
+						}
+					}
+				}
+			}
+		],
+		"annotations": [],
+		"lastPublishTime": "2021-07-13T13:47:31Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}
